@@ -1,4 +1,7 @@
 import './globals.css'
+import Navbar from '@/components/ui/Navbar'
+import Footer from "@/components/ui/Footer";
+import { Toaster } from "@/components/ui/toaster"
 
 export const metadata = {
   title: 'StoryPath',
@@ -7,18 +10,14 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body>
-        <header>
-          <h1>StoryPath</h1>
-          <nav>
-            <a href="/">Home</a> | 
-            <a href="/projects">Projects</a> | 
-            <a href="/locations">Locations</a>
-          </nav>
-        </header>
-        <main>{children}</main>
+      <html lang="en">
+      <body className="flex flex-col min-h-screen">
+      <Navbar/>
+      <main className="flex-grow mt-16 mb-16 p-4 w-full h-full">
+          {children}
+      </main>
+      <Footer/>
       </body>
-    </html>
+      </html>
   )
 }
