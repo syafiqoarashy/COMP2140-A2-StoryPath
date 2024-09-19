@@ -1,10 +1,10 @@
 import Image from 'next/image';
-import { Button } from "@/components/ui/button";
-import { CardSpotlight } from "@/components/ui/card-spotlight";
+import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card";
+import Link from "next/link";
 
 export default function Home() {
     return (
-        <div className="flex flex-col md:flex-row justify-center items-center py-4 px-12 w-full mt-12 text-white">
+        <div className="flex flex-col md:flex-row justify-center items-center py-4 px-12 w-full max-h-screen text-white">
             <div className="md:w-1/2 space-y-6">
                 <h1 className="text-5xl font-bold mb-4">Welcome to <span className="text-blue-500">StoryPath</span></h1>
                 <p className="text-xl mb-6">Create engaging tours, hunts, and adventures!</p>
@@ -14,19 +14,54 @@ export default function Home() {
                     <li>Treasure Hunts</li>
                     <li>And more!</li>
                 </ul>
-                <Button variant={"outline"} className="text-white">Get Started</Button>
             </div>
             <div className="md:w-1/2 mt-8 md:mt-0">
-                <CardSpotlight className="w-full max-w-md mx-auto">
-                    <Image
-                        src="/treasure-hunt.png"
-                        alt="Treasure Hunt Illustration"
-                        width={400}
-                        height={360}
-                        layout="responsive"
-                        className="rounded-lg"
-                    />
-                </CardSpotlight>
+                <CardContainer className="inter-var">
+                    <CardBody
+                        className="bg-black hover:shadow-2xl hover:shadow-emerald-500/[0.1] border-white/[0.2] w-auto sm:w-[30rem] h-auto rounded-xl p-6 border"
+                    >
+                        <CardItem
+                            translateZ="50"
+                            className="text-xl font-bold text-white"
+                        >
+                            Discover Adventure with StoryPath
+                        </CardItem>
+                        <CardItem
+                            as="p"
+                            translateZ="60"
+                            className="text-neutral-300 text-sm max-w-sm mt-2"
+                        >
+                            Embark on exciting quests and uncover hidden treasures!
+                        </CardItem>
+                        <CardItem translateZ="100" className="w-full mt-4">
+                            <Image
+                                src="/treasure-hunt.png"
+                                alt="Treasure Hunt Illustration"
+                                width={400}
+                                height={360}
+                                className="h-60 w-full object-cover rounded-xl group-hover/card:shadow-xl"
+                            />
+                        </CardItem>
+                        <div className="flex justify-between items-center mt-20">
+                            <CardItem
+                                translateZ={20}
+                                as={Link}
+                                href="/projects"
+                                className="px-4 py-2 rounded-xl text-xs font-normal text-white"
+                            >
+                                Explore Projects →
+                            </CardItem>
+                            <CardItem
+                                translateZ={20}
+                                as={Link}
+                                href="/projects/create"
+                                className="px-4 py-2 rounded-xl bg-white text-black text-xs font-bold"
+                            >
+                                Create New Project
+                            </CardItem>
+                        </div>
+                    </CardBody>
+                </CardContainer>
             </div>
         </div>
     )
