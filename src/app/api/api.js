@@ -57,3 +57,36 @@ export async function updateProject(id, project) {
 export async function deleteProject(id) {
   return apiRequest(`/project?id=eq.${id}`, 'DELETE');
 }
+
+export async function getLocations() {
+  return apiRequest('/location');
+}
+
+export async function getLocation(id) {
+  try {
+    const result = await apiRequest(`/location?id=eq.${id}`);
+    if (result.length === 0) {
+      console.log(`No location found with id ${id}`);
+    }
+    return result;
+  } catch (error) {
+    console.error(`Error fetching location with id ${id}:`, error);
+    throw error;
+  }
+}
+
+export function getLocationsByProjectId(locations, projectId) {
+  return locations.filter(location => location.project_id === projectId);
+}
+
+export async function createLocation(location) {
+  return apiRequest('/location', 'POST', location);
+}
+
+export async function updateLocation(id, location) {
+  return apiRequest(`/location?id=eq.${id}`, 'PATCH', location);
+}
+
+export async function deleteLocation(id) {
+  return apiRequest(`/location?id=eq.${id}`, 'DELETE');
+}

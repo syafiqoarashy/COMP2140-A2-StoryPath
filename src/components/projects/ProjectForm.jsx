@@ -25,7 +25,7 @@ const FormSchema = z.object({
   description: z.string().optional(),
   instructions: z.string().optional(),
   initial_clue: z.string().optional(),
-  homescreen_display: z.enum(["Description", "Instructions", "Initial Clue"]),
+    homescreen_display: z.enum(["Display initial clue", "Display all locations", "Display map"]),
   is_published: z.boolean(),
   participant_scoring: z.enum(["Not Scored", "Number of Scanned QR Codes", "Number of Locations Entered"]),
 })
@@ -38,7 +38,7 @@ export function ProjectForm({ project, onSubmit }) {
       description: "",
       instructions: "",
       initial_clue: "",
-      homescreen_display: "Description",
+      homescreen_display: "Display initial clue",
       is_published: false,
       participant_scoring: "Not Scored",
     },
@@ -112,9 +112,9 @@ export function ProjectForm({ project, onSubmit }) {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="Description">Description</SelectItem>
-                  <SelectItem value="Instructions">Instructions</SelectItem>
-                    <SelectItem value="Initial Clue">Initial Clue</SelectItem>
+                  <SelectItem value="Display initial clue">Display Initial Clue</SelectItem>
+                  <SelectItem value="Display all locations">Display All Locations</SelectItem>
+                    <SelectItem value="Display map">Display Map</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />
