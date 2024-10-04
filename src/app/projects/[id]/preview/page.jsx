@@ -3,14 +3,25 @@
 import { useState, useEffect } from 'react';
 import { getProject, getLocations } from '@/app/api/api';
 import Preview from "@/components/preview/Preview";
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
+import BreadcrumbComponent from "@/components/breadcrumbs/BreadcrumbComponent";
 
+/**
+ * PreviewPage component for previewing a project and its locations.
+ * @param {Object} props - Component props.
+ * @param {Object} props.params - Route parameters.
+ * @param {string} props.params.id - Project ID.
+ * @returns {JSX.Element} - Rendered component.
+ */
 export default function PreviewPage({ params }) {
     const [project, setProject] = useState(null);
     const [locations, setLocations] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        /**
+         * Fetches project and location data.
+         * @returns {Promise<void>}
+         */
         async function fetchData() {
             try {
                 const fetchedProject = await getProject(params.id);
@@ -31,25 +42,7 @@ export default function PreviewPage({ params }) {
 
     return (
         <div className="container mx-auto p-4 mt-20 bg-black text-white">
-            <Breadcrumb>
-                <BreadcrumbList>
-                    <BreadcrumbItem>
-                        <BreadcrumbLink href="/">Home</BreadcrumbLink>
-                    </BreadcrumbItem>
-                    <BreadcrumbSeparator />
-                    <BreadcrumbItem>
-                        <BreadcrumbLink href="/projects">Projects</BreadcrumbLink>
-                    </BreadcrumbItem>
-                    <BreadcrumbSeparator />
-                    <BreadcrumbItem>
-                        <BreadcrumbLink href={`/projects/${params.id}`}>{project ? project.title : 'Project'}</BreadcrumbLink>
-                    </BreadcrumbItem>
-                    <BreadcrumbSeparator />
-                    <BreadcrumbItem>
-                        <BreadcrumbPage>Preview</BreadcrumbPage>
-                    </BreadcrumbItem>
-                </BreadcrumbList>
-            </Breadcrumb>
+            <BreadcrumbComponent projectTitle={project.title} projectId={project.id}/>
             <h1 className="text-3xl font-bold mb-6">{project.title} - Preview</h1>
             <Preview project={project} locations={locations} />
         </div>

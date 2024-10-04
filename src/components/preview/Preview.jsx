@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Card, CardContent } from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
+import {BackgroundGradient} from "@/components/ui/background-gradient";
+import {CardContent} from "@/components/ui/card";
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -13,11 +14,25 @@ L.Icon.Default.mergeOptions({
     shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
 });
 
+/**
+ * Preview component displays project details and a map of locations.
+ *
+ * @param {Object} props - Component properties.
+ * @param {Object} props.project - Project details.
+ * @param {Array} props.locations - List of locations.
+ * @returns {JSX.Element} The rendered component.
+ */
 const Preview = ({ project, locations }) => {
     const [currentLocation, setCurrentLocation] = useState('homescreen');
     const [score, setScore] = useState(0);
     const [visitedLocations, setVisitedLocations] = useState(new Set());
+    const maxScore = locations.reduce((sum, loc) => sum + loc.score_points, 0);
 
+    /**
+     * Handles the change of the selected location.
+     *
+     * @param {string} locationId - The ID of the selected location.
+     */
     const handleLocationChange = (locationId) => {
         if (locationId !== 'homescreen' && !visitedLocations.has(locationId)) {
             const location = locations.find(loc => loc.id === locationId);
@@ -27,6 +42,11 @@ const Preview = ({ project, locations }) => {
         setCurrentLocation(locationId);
     };
 
+    /**
+     * Renders the map with valid locations.
+     *
+     * @returns {JSX.Element} The rendered map or a message if no valid locations.
+     */
     const renderMap = () => {
         const validLocations = locations.filter(loc => {
             const [lat, lng] = loc.location_position.replace(/[()]/g, '').split(',').map(coord => parseFloat(coord.trim()));
@@ -65,6 +85,11 @@ const Preview = ({ project, locations }) => {
         );
     };
 
+    /**
+     * Renders the content based on the current location.
+     *
+     * @returns {JSX.Element} The rendered content for the current location.
+     */
     const renderContent = () => {
         if (currentLocation === 'homescreen') {
             return (
@@ -95,7 +120,7 @@ const Preview = ({ project, locations }) => {
     };
 
     return (
-        <div className="preview-container flex flex-col items-center justify-center p-4 pb-20 h-fit">
+        <div className="preview-container flex flex-col items-center justify-center p-4 pb-20 h-fit bg-grid-white/[0.05]">
             <Select
                 onValueChange={handleLocationChange}
                 defaultValue="homescreen"
@@ -105,27 +130,27 @@ const Preview = ({ project, locations }) => {
                 </SelectTrigger>
                 <SelectContent>
                     <SelectItem value="homescreen">Homescreen</SelectItem>
-                    {locations.map(location => (
+                    {locations.sort((a, b) => a.location_order - b.location_order).map(location => (
                         <SelectItem key={location.id} value={location.id}>
                             {location.location_name}
                         </SelectItem>
                     ))}
                 </SelectContent>
             </Select>
-            <Card className="w-[320px] h-fit overflow-hidden shadow-xl">
+            <BackgroundGradient className="w-[320px] rounded-3xl h-fit overflow-hidden shadow-xl bg-zinc-900">
                 <CardContent className="p-0">
                     <div className="bg-black text-white p-2 text-center">
-                        <span className="text-sm">{project.title}</span>
+                        <span className="text-sm font-medium">{project.title}</span>
                     </div>
                     <ScrollArea className="p-4">
                         {renderContent()}
                     </ScrollArea>
-                    <div className="bg-gray-200 p-2 flex justify-between items-center bottom-0">
-                        <span>Points: {score}</span>
-                        <span>Visited: {visitedLocations.size}/{locations.length}</span>
+                    <div className="text-black bg-gray-200 p-4 flex justify-between items-center bottom-0">
+                        <span>Points: <span className="font-semibold">{score}/{maxScore}</span></span>
+                        <span>Visited: <span className="font-semibold">{visitedLocations.size}/{locations.length}</span></span>
                     </div>
                 </CardContent>
-            </Card>
+            </BackgroundGradient>
         </div>
     );
 };

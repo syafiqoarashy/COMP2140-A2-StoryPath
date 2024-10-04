@@ -8,10 +8,23 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import Link from 'next/link';
 import { deleteProject } from '@/app/api/api';
 
+/**
+ * ProjectsTable component displays a table of projects.
+ * 
+ * @param {Object} props - Component props.
+ * @param {Array} props.projects - Initial list of projects.
+ * @returns {JSX.Element} The rendered ProjectsTable component.
+ */
 export default function ProjectsTable({ projects: initialProjects }) {
   const [projects, setProjects] = useState(initialProjects);
   const router = useRouter();
 
+  /**
+   * Handles the deletion of a project.
+   * 
+   * @param {string} id - The ID of the project to delete.
+   * @returns {Promise<void>} A promise that resolves when the project is deleted.
+   */
   async function handleDeleteProject(id) {
     try {
       await deleteProject(id);

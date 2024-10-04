@@ -8,6 +8,12 @@ import { deleteLocation, updateLocation } from '@/app/api/api';
 import QRCode from 'react-qr-code';
 import ReactDOMServer from 'react-dom/server';
 
+/**
+ * LocationsTable component to display and manage locations.
+ * @param {Object} props - Component props.
+ * @param {Array} props.locations - Initial locations data.
+ * @param {string} props.projectId - ID of the project.
+ */
 export default function LocationsTable({ locations: initialLocations, projectId }) {
   const [locations, setLocations] = useState(initialLocations);
   const router = useRouter();
@@ -17,6 +23,10 @@ export default function LocationsTable({ locations: initialLocations, projectId 
     setLocations(sortedLocations);
   }, [initialLocations]);
 
+  /**
+   * Handles moving a location up in the list.
+   * @param {number} index - The index of the location to move up.
+   */
   const handleMoveUp = async (index) => {
     if (index > 0) {
       const newLocations = [...locations];
@@ -26,6 +36,10 @@ export default function LocationsTable({ locations: initialLocations, projectId 
     }
   };
 
+  /**
+   * Handles moving a location down in the list.
+   * @param {number} index - The index of the location to move down.
+   */
   const handleMoveDown = async (index) => {
     if (index < locations.length - 1) {
       const newLocations = [...locations];
@@ -35,6 +49,10 @@ export default function LocationsTable({ locations: initialLocations, projectId 
     }
   };
 
+  /**
+   * Updates the order of locations in the backend.
+   * @param {Array} newLocations - The updated list of locations.
+   */
   const updateLocationOrders = async (newLocations) => {
     try {
       await Promise.all(newLocations.map((location, index) =>
@@ -45,6 +63,10 @@ export default function LocationsTable({ locations: initialLocations, projectId 
     }
   };
 
+  /**
+   * Handles the deletion of a location.
+   * @param {string} id - The ID of the location to delete.
+   */
   async function handleDeleteLocation(id) {
     try {
       await deleteLocation(id);
@@ -54,10 +76,19 @@ export default function LocationsTable({ locations: initialLocations, projectId 
     }
   }
 
+  /**
+   * Generates the QR code value for a location.
+   * @param {Object} location - The location object.
+   * @returns {string} The generated QR code value.
+   */
   const generateQRValue = (location) => {
     return `${window.location.origin}/location/${location.id}`;
   };
 
+  /**
+   * Prints the QR code for a specific location.
+   * @param {Object} location - The location object.
+   */
   const printQRCode = (location) => {
     const printWindow = window.open('', '', 'height=400,width=400');
     printWindow.document.write(`
@@ -95,6 +126,9 @@ export default function LocationsTable({ locations: initialLocations, projectId 
     }, 250);
   };
 
+  /**
+   * Prints QR codes for all locations.
+   */
   const printAllQRCodes = () => {
     const printWindow = window.open('', '', 'height=600,width=800');
     printWindow.document.write(`

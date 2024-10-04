@@ -1,13 +1,18 @@
 import Image from 'next/image';
 import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card";
 import Link from "next/link";
+import {FlipWords} from "@/components/ui/flip-words";
 
+/**
+ * Home component representing the landing page of the application.
+ * @returns {JSX.Element} The rendered Home component.
+ */
 export default function Home() {
     return (
-        <div className="flex flex-col md:flex-row justify-center items-center py-4 px-12 w-full h-full text-white">
+        <div className="flex flex-col md:flex-row justify-center items-center py-4 px-12 w-full h-full text-white bg-grid-white/[0.05]">
             <div className="md:w-1/2 space-y-6">
                 <h1 className="text-5xl font-bold mb-4">Welcome to <span className="text-blue-500">StoryPath</span></h1>
-                <p className="text-xl mb-6">Create engaging tours, hunts, and adventures!</p>
+                <div className="text-3xl text-slate-200 font-medium mb-6">Create engaging<FlipWords className="text-slate-200 font-bold" words={["tours!", "hunts!", "adventures!"]} /></div>
                 <ul className="list-disc list-inside mb-6 space-y-2">
                     <li>Museum Tours</li>
                     <li>Campus Tours</li>
